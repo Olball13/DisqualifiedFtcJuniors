@@ -31,8 +31,8 @@ public class AprilTagWebcam {
     public static double degreeCorrection;
     public static double rangeCorrection;
     private static final double camXCorrection = 0;// this is the x difference of the turret to the robots center (0)
-    private static final double camYCorrection = DistanceUnit.INCH.fromCm(15);// this is the y difference of the turret to the robots center (+ value)
-    private static final double camRadius = DistanceUnit.INCH.fromCm(20);//This means the camera lens is 20cm from the center of the turret
+    private static final double camYCorrection = DistanceUnit.INCH.fromCm(10);// this is the y difference of the turret to the robots center (+ value)
+    private static final double camRadius = DistanceUnit.INCH.fromCm(21);//This means the camera lens is 20cm from the center of the turret
     public static Pose pedroPoseCamCorrection;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -135,7 +135,7 @@ public class AprilTagWebcam {
             totalCos += Math.cos(robotheading);
             totalX += robotx;
             totalY += roboty;
-            tags++; //Add 1 to the # of tags detected
+            tags++; //Add to the # of tags detected
         }
         double averageHeading = Math.atan2(totalSin, totalCos); //converting into radian value and automatically averaging
         double averageX = totalX / tags; //average x of all detections

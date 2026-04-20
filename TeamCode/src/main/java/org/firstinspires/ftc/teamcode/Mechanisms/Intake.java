@@ -4,18 +4,14 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Teleops.ErrorMainTeleop;
 
 public class Intake {
-    private static DcMotor intake_motor;
-    private static CRServo intake_servo;
+    private DcMotor intake_motor;
+    private CRServo intake_servo;
     public static boolean intake_On = false;
 
     public void init(HardwareMap hardwareMap) {
-        intake_motor = hardwareMap.get(DcMotor.class, "intake_servo");
+        intake_motor = hardwareMap.get(DcMotor.class, "intake_motor");
         intake_motor.setDirection(DcMotor.Direction.REVERSE);
         intake_servo = hardwareMap.get(CRServo.class, "intake_servo");
         intake_servo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -26,7 +22,7 @@ public class Intake {
         } else {
             intake_motor.setPower(0);
         }
-        if (ErrorMainTeleop.shoot && FlyWheel.getVelocity() > FlyWheel.desiredVelocity - 5) {
+        if (FlyWheel.shoot && FlyWheel.getVelocity() >= FlyWheel.desiredVelocity *0.95) {
             intake_servo.setPower(1);
         } else {
             if (intake_On) {

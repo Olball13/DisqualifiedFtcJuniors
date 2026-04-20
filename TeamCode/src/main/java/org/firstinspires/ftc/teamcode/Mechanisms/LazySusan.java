@@ -32,7 +32,7 @@ public class LazySusan {
         telemetry.addData("Turret Robot Relative Orientation (Degrees)", (getOrientation(AngleUnit.DEGREES)));
         if (lazysusan_motor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
             lazysusan_motor.setPower(1);
-            if ((lazysusan_motor.getCurrentPosition() > -2 && lazysusan_motor.getCurrentPosition() < 2) || !centerTurret) {
+            if (!centerTurret) {
                 lazysusan_motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
             return;
@@ -55,7 +55,7 @@ public class LazySusan {
             lazysusan_motor.setPower(0);
             telemetry.addLine("ANGLE LIMIT REACHED");
         }
-        if(getOrientation(AngleUnit.DEGREES) < angleLimit/2 && lazysusan_motor.getPower() > 0) {
+        if(getOrientation(AngleUnit.DEGREES) > angleLimit/2 && lazysusan_motor.getPower() > 0) {
             lazysusan_motor.setPower(0);
             telemetry.addLine("ANGLE LIMIT REACHED");
         }

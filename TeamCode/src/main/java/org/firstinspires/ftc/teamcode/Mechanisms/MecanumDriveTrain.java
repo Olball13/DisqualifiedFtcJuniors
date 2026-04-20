@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
-import static com.qualcomm.robotcore.eventloop.opmode.OpMode.blackboard;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -41,11 +39,11 @@ public class MecanumDriveTrain {
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
-    public void update(Boolean restyaw, double left_stick_y, double left_stick_x, double right_stick_x) {
-        if (restyaw) {
+    public void update(Boolean resetYaw, double left_stick_y, double left_stick_x, double right_stick_x) {
+        if (resetYaw) {
             imu.resetYaw();
         }
-        if (ErrorMainTeleop.drive_type == "Robot Oriented") {
+        if (ErrorMainTeleop.drive_type.equals("Robot Oriented")) {
             drive(-left_stick_y, left_stick_x, right_stick_x);
         } else {
             driveFieldRelative(-left_stick_y, left_stick_x, right_stick_x);

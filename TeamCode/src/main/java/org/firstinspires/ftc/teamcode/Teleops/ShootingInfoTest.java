@@ -36,7 +36,7 @@ public class ShootingInfoTest extends OpMode {
     @Override
     public void loop() {
         telemetryM.debug("Distance From Basket", AprilTagWebcam.rangeCorrection);
-        telemetryM.debug("Flywheel Velocity", flyWheel.getVelocity());
+        telemetryM.debug("Flywheel Velocity", FlyWheel.getVelocity());
         telemetryM.debug("Ramp %", rampPercent);
         lazySusan.update(gamepad1.square, gamepad1.circle, gamepad1.triangle);
         if (gamepad1.left_bumper) {

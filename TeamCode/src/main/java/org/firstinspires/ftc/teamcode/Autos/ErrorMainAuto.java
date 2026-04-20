@@ -32,7 +32,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.BlackboardKeys;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Mechanisms.AprilTagWebcam;
+import org.firstinspires.ftc.teamcode.Mechanisms.FlyWheel;
+import org.firstinspires.ftc.teamcode.Mechanisms.Hood;
+import org.firstinspires.ftc.teamcode.Mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.Mechanisms.LazySusan;
+import org.firstinspires.ftc.teamcode.Mechanisms.OpmodeIMU;
 import org.firstinspires.ftc.teamcode.Mechanisms.PedroAutoFollower;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
@@ -44,6 +50,14 @@ public class ErrorMainAuto extends OpMode {
     private static boolean use_Lane = false;
     private static String alliance_Colour = "Blue", start_From = "Short", drive_Type = "Field Oriented";
     private static final float general_Shoot_Time = 5;
+    private boolean centerTurret= false;
+    FlyWheel flyWheel = new FlyWheel();
+    Hood hood = new Hood();
+    LazySusan lazySusan = new LazySusan();
+    Intake intake = new Intake();
+    AprilTagWebcam aprilTagWebcam = new AprilTagWebcam();
+    OpmodeIMU opmodeIMU = new OpmodeIMU();
+
 
     /**
      * Variable for selection placement in the interface before start
@@ -56,6 +70,11 @@ public class ErrorMainAuto extends OpMode {
     public void init() {
         follower = Constants.createFollower(hardwareMap);
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
+        flyWheel.init(hardwareMap);
+        aprilTagWebcam.init(hardwareMap, telemetry);
+        hood.init(hardwareMap, 30);
+        intake.init(hardwareMap);
+        lazySusan.init(hardwareMap, telemetry, 180);
         PedroAutoFollower.buildPaths();
     }
 
@@ -63,13 +82,26 @@ public class ErrorMainAuto extends OpMode {
         auto_Select_Update();
     }
     public void start() {
+        opmodeIMU.init(hardwareMap, telemetry, Math.toDegrees(follower.getHeading()));
         autoTime.reset();
-        BlackboardKeys.ALLIANCE_KEY = alliance_Colour;
-        BlackboardKeys.DRIVETYPE_KEY = drive_Type;
+        blackboard.put("ALLIANCE", alliance_Colour);
+        blackboard.put("DRIVETYPE", drive_Type);
     }
 
     @Override
     public void loop() {
+        if (AprilTagWebcam.pedroPoseCamCorrection != null) {follower.setPose(AprilTagWebcam.pedroPoseCamCorrection);}
+        follower.setHeading(opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.RADIANS));
+        aprilTagWebcam.update();
+        hood.setRamp_angle(0); // INPUT EQUATION HERE
+        lazySusan.update(false, false, centerTurret);
+        flyWheel.update(0);//Math.pow(AprilTagWebcam.degreeCorrection, 2) / 50 <--INSERT EQUATION
+        intake.update();
+        opmodeIMU.update();
+        if (autoTime.seconds() > 28) {
+            centerTurret = true;
+        }
+
         MapDrawer.drawDebug(follower);
         telemetryM.update();
         telemetryM.debug("position", follower.getPose());
@@ -207,13 +239,17 @@ public class ErrorMainAuto extends OpMode {
             case 1:
                 if (follower.isBusy()) {
                  telemetry.addLine("Winding up Flywheel with range correction");
+                 flyWheel.setVelocity(1500);
                  pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
+                    FlyWheel.shoot = true;
                 } else {
                     telemetry.addLine("Stopping Flywheel");
+                    FlyWheel.shoot = false;
                     if (use_Lane){
                         telemetry.addLine("Intake On");
+                        Intake.intake_On = true;
                         if (alliance_Colour.equals("Blue")) {
                             if (start_From.equals("Short")) {
                                 follower.followPath(go_Blue_Lane_1_Start);
@@ -292,9 +328,11 @@ public class ErrorMainAuto extends OpMode {
             case 4:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
+                    flyWheel.setVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
+                    FlyWheel.shoot = true;
                 } else {
                     if (alliance_Colour.equals("Blue")) {
                         if (start_From.equals("Short")) {
@@ -317,6 +355,7 @@ public class ErrorMainAuto extends OpMode {
                 break;
             case 5:
                 telemetry.addLine("Intake Off"); //If it is not switched off before
+                Intake.intake_On = false;
                 if (!follower.isBusy()) {
                     telemetry.addLine("Intake On");
                     if (alliance_Colour.equals("Blue")) {
@@ -340,16 +379,22 @@ public class ErrorMainAuto extends OpMode {
             case 7:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
+                    flyWheel.setVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
+                    FlyWheel.shoot = true;
                 } else {
                     telemetry.addLine("Auto Finished");
+                    FlyWheel.shoot = false;
                 }
          }
     }
     private void path_Rest() {
         pathTime.reset();
         path_State += 1;
+    }
+    public void stop() {
+        blackboard.put("STARTPOSE", follower.getPose());
     }
 }

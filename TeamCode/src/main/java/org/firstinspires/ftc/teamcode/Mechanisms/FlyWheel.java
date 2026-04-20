@@ -4,11 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Teleops.ErrorMainTeleop;
-
 public class FlyWheel {
     private static DcMotor flywheel_motor_1;
     private static DcMotor flywheel_motor_2;
+    public static boolean shoot = false;
 
     public void init(HardwareMap hardwareMap) {
         flywheel_motor_1 = hardwareMap.get(DcMotor.class, "flywheel_motor_1");
@@ -23,9 +22,13 @@ public class FlyWheel {
         ((DcMotorEx) flywheel_motor_2).setVelocity(velocity);
         desiredVelocity = velocity;
     }
-    public void update() {
-        if (ErrorMainTeleop.shoot) {
-            setVelocity(1500);
+    public void update(double equation) {
+        if (shoot) {
+            if (equation == 0) {
+                setVelocity(1500);
+            } else {
+                setVelocity(equation);
+            }
         } else {
             setVelocity(0);
         }
