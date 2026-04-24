@@ -11,7 +11,7 @@ public class OpmodeIMU {//This should proof useful to keep the proper orientatio
     private IMU imu;
     private Double startingOffset;
     private Telemetry telemetry;
-    public void init(HardwareMap hardwareMap, Telemetry telemetry, Double startAngle) {
+    public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle) {
         this.telemetry = telemetry;
         startingOffset = startAngle;
         imu = hardwareMap.get(IMU.class, "imu");

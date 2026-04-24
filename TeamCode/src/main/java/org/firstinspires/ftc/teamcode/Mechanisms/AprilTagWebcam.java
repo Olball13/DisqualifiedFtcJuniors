@@ -24,16 +24,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AprilTagWebcam {
-    private static AprilTagProcessor aprilTagProcessor;
-    private static VisionPortal visionPortal;
-    public static List<AprilTagDetection> detectedTags = new ArrayList<>();
+    private AprilTagProcessor aprilTagProcessor;
+    private VisionPortal visionPortal;
+    public List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
     public static double degreeCorrection;
     public static double rangeCorrection;
-    private static final double camXCorrection = 0;// this is the x difference of the turret to the robots center (0)
-    private static final double camYCorrection = DistanceUnit.INCH.fromCm(10);// this is the y difference of the turret to the robots center (+ value)
-    private static final double camRadius = DistanceUnit.INCH.fromCm(21);//This means the camera lens is 20cm from the center of the turret
-    public static Pose pedroPoseCamCorrection;
+    public Pose pedroPoseCamCorrection;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         aprilTagProcessor = new AprilTagProcessor.Builder()
@@ -61,10 +58,10 @@ public class AprilTagWebcam {
         this.telemetry = telemetry;
     }
 
-    public void update() {
+    public void update(double lazySusanOrientation) {
         detectedTags = aprilTagProcessor.getDetections();
-        fieldRelativeUpdate();
-        AprilTagBasketDetection();
+        fieldRelativeUpdate(lazySusanOrientation);
+        aprilTagBasketDetection();
     }
 
     public List<AprilTagDetection> getDetectedTags() {
@@ -99,7 +96,7 @@ public class AprilTagWebcam {
         rangeCorrection = 0;
         return null;
     }
-    private void fieldRelativeUpdate() {
+    private void fieldRelativeUpdate( double lazySusanOrientation) {
         //the robot x and y are converted from FTC to Pedro coordinates by adding 72 inches
         if (detectedTags == null || detectedTags.isEmpty()) { //Check if there are any detections
             pedroPoseCamCorrection = null;
@@ -120,15 +117,15 @@ public class AprilTagWebcam {
             double tagfieldheading = tagAngles.thirdAngle; //field relative heading of tag
             double range = detection.ftcPose.range; //range from cam to tag
             double bearing = detection.ftcPose.bearing; //degree of deflection of cam from tag
-            double turretangle = LazySusan.getOrientation(AngleUnit.RADIANS); //heading of the turret/cam
+            double turretangle = lazySusanOrientation; //heading of the turret/cam
             double camfieldheading = tagfieldheading - bearing; //field relative heading of the turret/cam
             double camfieldx = tagfieldx - (range * Math.cos(camfieldheading)); //field relative x of cam
             double camfieldy = tagfieldy - (range * Math.sin(camfieldheading)); //field relative y of cam
             double robotheading = camfieldheading - turretangle; //field relative heading of robot
-            double turretx = camfieldx - (camRadius * Math.cos(camfieldheading)); //field relative x of turret
-            double turrety = camfieldy - (camRadius * Math.sin(camfieldheading)); //field relative y of turret
-            double offsetx = camXCorrection * Math.cos(robotheading) - camYCorrection * Math.sin(robotheading); //Rotation matrix math
-            double offsety = camXCorrection * Math.sin(robotheading) + camYCorrection * Math.cos(robotheading); //Converts robot relative offset to field relative offset
+            double turretx = camfieldx - (Robot.camRadius * Math.cos(camfieldheading)); //field relative x of turret
+            double turrety = camfieldy - (Robot.camRadius * Math.sin(camfieldheading)); //field relative y of turret
+            double offsetx = Robot.camXCorrection * Math.cos(robotheading) - Robot.camYCorrection * Math.sin(robotheading); //Rotation matrix math
+            double offsety = Robot.camXCorrection * Math.sin(robotheading) + Robot.camYCorrection * Math.cos(robotheading); //Converts robot relative offset to field relative offset
             double robotx = turretx - offsetx + 72; //Pedro field relative x of robot
             double roboty = turrety - offsety + 72; //Pedro field relative y of robot
             totalSin += Math.sin(robotheading); //Add detection data to total values
@@ -143,7 +140,7 @@ public class AprilTagWebcam {
         pedroPoseCamCorrection = new Pose (averageX, averageY, averageHeading); //updating the cam correction
     }
 
-    private void AprilTagBasketDetection() {
+    private void aprilTagBasketDetection() {
         if (ErrorMainTeleop.alliance.equals("Blue")) {
             AprilTagDetection id20 = getTagBySpecificid(20);
             displayDetectionTelemetry(id20);

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Intake {
     private DcMotor intake_motor;
     private CRServo intake_servo;
-    public static boolean intake_On = false;
+    public boolean intake_On = false;
 
     public void init(HardwareMap hardwareMap) {
         intake_motor = hardwareMap.get(DcMotor.class, "intake_motor");
@@ -16,13 +16,13 @@ public class Intake {
         intake_servo = hardwareMap.get(CRServo.class, "intake_servo");
         intake_servo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-    public void update() {
+    public void update(boolean shoot, double flyWheelVelocity) {
         if (intake_On) {
             intake_motor.setPower(1);
         } else {
             intake_motor.setPower(0);
         }
-        if (FlyWheel.shoot && FlyWheel.getVelocity() >= FlyWheel.desiredVelocity *0.95) {
+        if (shoot && flyWheelVelocity >= FlyWheel.desiredVelocity *0.95) {
             intake_servo.setPower(1);
         } else {
             if (intake_On) {

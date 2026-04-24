@@ -24,7 +24,7 @@ public class MecanumExample extends OpMode {
 
     @Override
     public void init() {
-        shootingLogic.init(hardwareMap);
+        shootingLogic.init(hardwareMap, 1.00);
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");

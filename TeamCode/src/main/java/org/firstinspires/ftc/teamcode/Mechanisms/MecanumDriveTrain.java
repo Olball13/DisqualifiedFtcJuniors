@@ -39,14 +39,14 @@ public class MecanumDriveTrain {
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
-    public void update(Boolean resetYaw, double left_stick_y, double left_stick_x, double right_stick_x) {
+    public void update(boolean resetYaw, double right_stick_y, double left_stick_x, double right_stick_x) {
         if (resetYaw) {
             imu.resetYaw();
         }
         if (ErrorMainTeleop.drive_type.equals("Robot Oriented")) {
-            drive(-left_stick_y, left_stick_x, right_stick_x);
+            drive(right_stick_y, left_stick_x, right_stick_x);
         } else {
-            driveFieldRelative(-left_stick_y, left_stick_x, right_stick_x);
+            driveFieldRelative(right_stick_y, left_stick_x, right_stick_x);
         }
     }
     public void drive(double forward, double right, double rotate) {

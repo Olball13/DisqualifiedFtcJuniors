@@ -6,6 +6,7 @@ import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.Mechanisms.FlyWheel;
 import org.firstinspires.ftc.teamcode.Mechanisms.Hood;
@@ -28,22 +29,22 @@ public class ShootingInfoTest extends OpMode {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
         lazySusan.init(hardwareMap, telemetry, turretAngleLimit);
         aprilTagWebcam.init(hardwareMap, telemetry);
-        flyWheel.init(hardwareMap);
-        hood.init(hardwareMap, 30);
+        flyWheel.init(hardwareMap, 0);
+        hood.init(hardwareMap, 30, 0);
     }
 
 
     @Override
     public void loop() {
         telemetryM.debug("Distance From Basket", AprilTagWebcam.rangeCorrection);
-        telemetryM.debug("Flywheel Velocity", FlyWheel.getVelocity());
+        telemetryM.debug("Flywheel Velocity", flyWheel.getVelocity());
         telemetryM.debug("Ramp %", rampPercent);
         lazySusan.update(gamepad1.square, gamepad1.circle, gamepad1.triangle);
         if (gamepad1.left_bumper) {
             flyWheel.setVelocity(flywheelSpeed);
         }
-        hood.setRamp_angle(rampPercent);
-        aprilTagWebcam.update();
+        hood.update();
+        aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
 
 
     }

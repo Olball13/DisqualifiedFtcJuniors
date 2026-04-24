@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="SKYSTONE Sounds")
-@Disabled
 public class SkyStoneSounds extends LinearOpMode {
 
     // List of available sound resources
