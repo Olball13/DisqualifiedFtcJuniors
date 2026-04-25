@@ -8,20 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Robot {
-
-
-    protected static final double camXCorrection = 0;// this is the x difference of the turret to the robots center (0)
-    protected static final double camYCorrection = DistanceUnit.INCH.fromCm(0.45);// this is the y difference of the turret to the robots center (+ value)
-    protected static final double camRadius = DistanceUnit.INCH.fromCm(21);//This means the camera lens is 21cm from the center of the turret
-
-    protected static final double encoderTicksToDegrees = (double) 28/360;//NOT CORRECT MAYBE
-    protected static final double encoderTicksToRadians = (double) 28/360 * (Math.PI/180);
-    protected static final double gearRatio =
-            3 //Motor ratio attachment 1
-                    *5 // Motor ratio attachment 2
-                    *5; // 18 tooth gear to 90 tooth lazy susan
-
-
     public AprilTagWebcam aprilTagWebcam = new AprilTagWebcam();
     public FlyWheel flyWheel = new FlyWheel();
     public Hood hood = new Hood();
@@ -30,15 +16,16 @@ public class Robot {
     public MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
     public OpmodeIMU opmodeIMU = new OpmodeIMU();
 
-    public void init(HardwareMap hardwareMap, Telemetry telemetry, double turretStartAngle, double turretAngleLimit, double flyWheelEquation, int hoodMaxAngle, double hoodEquation, double imuStartHeading) {
+    public void init(HardwareMap hardwareMap, Telemetry telemetry, double turretStartAngle, double flyWheelEquation, int hoodMaxAngle, double hoodEquation, double imuStartHeading) {
         aprilTagWebcam.init(hardwareMap, telemetry);
         flyWheel.init(hardwareMap, flyWheelEquation);//<--INPUT EQUATION
         hood.init(hardwareMap, hoodMaxAngle, hoodEquation);//<--INPUT EQUATION
         intake.init(hardwareMap);
         mecanumDriveTrain.init(hardwareMap);
         opmodeIMU.init(hardwareMap, telemetry, imuStartHeading);
-        lazySusan.init(hardwareMap, telemetry, turretStartAngle, turretAngleLimit);
+        lazySusan.init(hardwareMap, telemetry, turretStartAngle);
     }
+
     public void update() {
         opmodeIMU.update();
         flyWheel.update();
@@ -47,6 +34,7 @@ public class Robot {
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
         intake.update(flyWheel.shoot, flyWheel.getVelocity());
     }
+
     public void update(Gamepad gamepad1, Gamepad gamepad2) {
         opmodeIMU.update();
         flyWheel.update();

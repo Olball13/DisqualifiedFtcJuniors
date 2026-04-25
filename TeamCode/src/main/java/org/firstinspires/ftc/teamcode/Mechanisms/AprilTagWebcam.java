@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Constants.AprilTagWebcamConstants;
 import org.firstinspires.ftc.teamcode.Teleops.ErrorMainTeleop;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -28,8 +29,8 @@ public class AprilTagWebcam {
     private VisionPortal visionPortal;
     public List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
-    public static double degreeCorrection;
-    public static double rangeCorrection;
+    public double degreeCorrection;
+    public double rangeCorrection;
     public Pose pedroPoseCamCorrection;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -122,10 +123,10 @@ public class AprilTagWebcam {
             double camfieldx = tagfieldx - (range * Math.cos(camfieldheading)); //field relative x of cam
             double camfieldy = tagfieldy - (range * Math.sin(camfieldheading)); //field relative y of cam
             double robotheading = camfieldheading - turretangle; //field relative heading of robot
-            double turretx = camfieldx - (Robot.camRadius * Math.cos(camfieldheading)); //field relative x of turret
-            double turrety = camfieldy - (Robot.camRadius * Math.sin(camfieldheading)); //field relative y of turret
-            double offsetx = Robot.camXCorrection * Math.cos(robotheading) - Robot.camYCorrection * Math.sin(robotheading); //Rotation matrix math
-            double offsety = Robot.camXCorrection * Math.sin(robotheading) + Robot.camYCorrection * Math.cos(robotheading); //Converts robot relative offset to field relative offset
+            double turretx = camfieldx - (AprilTagWebcamConstants.camRadius * Math.cos(camfieldheading)); //field relative x of turret
+            double turrety = camfieldy - (AprilTagWebcamConstants.camRadius * Math.sin(camfieldheading)); //field relative y of turret
+            double offsetx = AprilTagWebcamConstants.camXCorrection * Math.cos(robotheading) - AprilTagWebcamConstants.camYCorrection * Math.sin(robotheading); //Rotation matrix math
+            double offsety = AprilTagWebcamConstants.camXCorrection * Math.sin(robotheading) + AprilTagWebcamConstants.camYCorrection * Math.cos(robotheading); //Converts robot relative offset to field relative offset
             double robotx = turretx - offsetx + 72; //Pedro field relative x of robot
             double roboty = turrety - offsety + 72; //Pedro field relative y of robot
             totalSin += Math.sin(robotheading); //Add detection data to total values
