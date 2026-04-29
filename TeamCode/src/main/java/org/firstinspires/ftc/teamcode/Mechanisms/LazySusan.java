@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Constants.LazySusanConstants;
 public class LazySusan {
     private double startAngle;
     private Telemetry telemetry;
-    private static DcMotor lazySusanMotor;
+    private DcMotor lazySusanMotor;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle) {
         //INITIALIZE the motor + telemetry and set the angle limit from its default value
@@ -59,11 +59,11 @@ public class LazySusan {
 
     public double getOrientation(AngleUnit angleUnit) {
         if (angleUnit.equals(AngleUnit.DEGREES)) {
-            return (lazySusanMotor.getCurrentPosition() * LazySusanConstants.encoderTicksToDegrees / LazySusanConstants.gearRatio) + startAngle;
+            return ((lazySusanMotor.getCurrentPosition() / Robot.encoderTicksToDegrees) / Robot.gearRatio) + startAngle;
         } else if (angleUnit.equals(AngleUnit.RADIANS)) {
-            return lazySusanMotor.getCurrentPosition() * LazySusanConstants.encoderTicksToRadians / LazySusanConstants.gearRatio + (Math.toRadians(startAngle));
+            return ((lazySusanMotor.getCurrentPosition() / Robot.encoderTicksToRadians) / Robot.gearRatio) + (Math.toRadians(startAngle));
         } else {
-            return lazySusanMotor.getCurrentPosition() / LazySusanConstants.gearRatio + startAngle / LazySusanConstants.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
+            return lazySusanMotor.getCurrentPosition() / Robot.gearRatio + startAngle * Robot.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
         }
     }
 }

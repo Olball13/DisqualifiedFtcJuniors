@@ -27,7 +27,7 @@ public class ShootingInfoTest extends OpMode {
     @Override
     public void init() {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
-        lazySusan.init(hardwareMap, telemetry, turretAngleLimit);
+        lazySusan.init(hardwareMap, telemetry, 0, turretAngleLimit);
         aprilTagWebcam.init(hardwareMap, telemetry);
         flyWheel.init(hardwareMap, 0);
         hood.init(hardwareMap, 30, 0);

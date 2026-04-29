@@ -19,7 +19,7 @@ public class Robot {
     public void init(HardwareMap hardwareMap, Telemetry telemetry, double turretStartAngle, double flyWheelEquation, int hoodMaxAngle, double hoodEquation, double imuStartHeading) {
         aprilTagWebcam.init(hardwareMap, telemetry);
         flyWheel.init(hardwareMap, flyWheelEquation);//<--INPUT EQUATION
-        hood.init(hardwareMap, hoodMaxAngle, hoodEquation);//<--INPUT EQUATION
+        hood.init(hardwareMap, hoodEquation);//<--INPUT EQUATION
         intake.init(hardwareMap);
         mecanumDriveTrain.init(hardwareMap);
         opmodeIMU.init(hardwareMap, telemetry, imuStartHeading);
@@ -32,7 +32,7 @@ public class Robot {
         hood.update();
         lazySusan.update(false, false, false);
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
-        intake.update(flyWheel.shoot, flyWheel.getVelocity());
+        intake.update(flyWheel.shoot, flyWheel.getCurrentVelocity();
     }
 
     public void update(Gamepad gamepad1, Gamepad gamepad2) {
@@ -41,7 +41,7 @@ public class Robot {
         hood.update();
         lazySusan.update(gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.dpad_down);
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
-        intake.update(flyWheel.shoot, flyWheel.getVelocity());
-        mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        intake.update(flyWheel.shoot, flyWheel);
+        mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
     }
 }
