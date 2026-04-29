@@ -17,8 +17,11 @@ public class Hood {
          setAnglePercent(equation);
     }
     public void setAnglePercent(double anglePercent) {
-         double servoPose =((double) maxAngle / 360) *Math.min(Math.max(anglePercent, 0), 1);
-        ramp_angle_servo.setPosition(servoPose);
+         double degreesToServoRotation = (double) 1 / 360; // For every 1 degree is this value to a set Servo Pos
+         double anglePercentToDegrees = anglePercent * maxAngle; // Conversion from a percentage (0-1) of the max angle to degrees
+         double anglePercentToServoRotation = anglePercentToDegrees * degreesToServoRotation; // The value of of the Servo Pos translated from the angle %
+         double normalizedValue = Math.min(Math.max(anglePercentToServoRotation, 0), 1); // Normalize values to fit servo parameters
+        ramp_angle_servo.setPosition(normalizedValue);
     }
 
 }

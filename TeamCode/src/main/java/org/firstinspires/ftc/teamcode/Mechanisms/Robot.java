@@ -14,8 +14,8 @@ public class Robot {
     protected static final double camYCorrection = DistanceUnit.INCH.fromCm(0.45);// this is the y difference of the turret to the robots center (+ value)
     protected static final double camRadius = DistanceUnit.INCH.fromCm(21);//This means the camera lens is 21cm from the center of the turret
 
-    protected static final double encoderTicksToDegrees = (double) 28/360;//NOT CORRECT MAYBE
-    protected static final double encoderTicksToRadians = (double) 28/360 * (Math.PI/180);
+    protected static final double encoderTicksToDegrees = (double) 28 / 360;//NOT CORRECT MAYBE
+    protected static final double encoderTicksToRadians = (double) 28 / (2 * Math.PI);
     protected static final double gearRatio =
             3 //Motor ratio attachment 1
                     *5 // Motor ratio attachment 2
@@ -54,6 +54,6 @@ public class Robot {
         lazySusan.update(gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.dpad_down);
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
         intake.update(flyWheel.shoot, flyWheel.getVelocity());
-        mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
     }
 }

@@ -14,7 +14,7 @@ public class Intake {
         intake_motor = hardwareMap.get(DcMotor.class, "intake_motor");
         intake_motor.setDirection(DcMotor.Direction.REVERSE);
         intake_servo = hardwareMap.get(CRServo.class, "intake_servo");
-        intake_servo.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake_servo.setDirection(DcMotor.Direction.REVERSE);
     }
     public void update(boolean shoot, double flyWheelVelocity) {
         if (intake_On) {

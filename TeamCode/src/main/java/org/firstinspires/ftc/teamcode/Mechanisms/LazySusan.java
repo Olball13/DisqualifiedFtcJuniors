@@ -10,7 +10,7 @@ public class LazySusan {
     private double angleLimit = 180;// This would only allow the turret to move 90 degrees left and right
     private double startAngle;
     private Telemetry telemetry;
-    private static DcMotor lazysusan_motor;
+    private DcMotor lazysusan_motor;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle, double angleLimit) {
         //INITIALIZE the motor + telemetry and set the angle limit from its default value
@@ -58,11 +58,11 @@ public class LazySusan {
     }
     public double getOrientation(AngleUnit angleUnit) {
         if (angleUnit.equals(AngleUnit.DEGREES)) {
-            return (lazysusan_motor.getCurrentPosition() *Robot.encoderTicksToDegrees/Robot.gearRatio) + startAngle;
+            return ((lazysusan_motor.getCurrentPosition() / Robot.encoderTicksToDegrees) / Robot.gearRatio) + startAngle;
         } else if (angleUnit.equals(AngleUnit.RADIANS)) {
-            return lazysusan_motor.getCurrentPosition()*Robot.encoderTicksToRadians/Robot.gearRatio + (Math.toRadians(startAngle));
+            return ((lazysusan_motor.getCurrentPosition() / Robot.encoderTicksToRadians) / Robot.gearRatio) + (Math.toRadians(startAngle));
         } else {
-            return lazysusan_motor.getCurrentPosition()/Robot.gearRatio + startAngle/Robot.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
+            return lazysusan_motor.getCurrentPosition() / Robot.gearRatio + startAngle * Robot.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
         }
     }
 }

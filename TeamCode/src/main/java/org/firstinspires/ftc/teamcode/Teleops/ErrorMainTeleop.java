@@ -22,14 +22,18 @@ public class ErrorMainTeleop extends OpMode {
     private TelemetryManager telemetryM;
     public static Pose startingPose = (Pose) blackboard.getOrDefault("STARTPOSE", new Pose (60, 60, Math.toRadians(90)));
     Robot robot = new Robot();
-    public static String alliance = String.valueOf(blackboard.get("ALLIANCE")), drive_type = String.valueOf(blackboard.get("DRIVETYPE"));
+    public static String alliance = String.valueOf(blackboard.getOrDefault("ALLIANCE", "Blue")), drive_type = String.valueOf(blackboard.getOrDefault("DRIVETYPE", "Robot Oriented"));
     private int interfaceSelection = 1;
     @Override
     public void init() {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
+        Object shooterHeading = blackboard.get("SHOOTERHEADING");
+        if (shooterHeading == null) {
+            shooterHeading = 0;
+        }
 
         robot.init(hardwareMap, telemetry,
-                (double) blackboard.getOrDefault("SHOOTERHEADING", 0),
+                (double) shooterHeading,
                 180,
                 2200,
                 30,
@@ -89,7 +93,7 @@ public class ErrorMainTeleop extends OpMode {
         // if (robot.aprilTagWebcam.pedroPoseCamCorrection != null) {teleopfollower.setPose(robot.aprilTagWebcam.pedroPoseCamCorrection);}
         // teleopfollower.setHeading(robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.RADIANS));
         MapDrawer.drawDebug(teleopfollower);
-        MapDrawer.drawRobot(robot.aprilTagWebcam.pedroPoseCamCorrection);
+        MapDrawer.drawRobot(robot.aprilTagWebcam.pedroPoseCamCorrection); // Will this negate the robot previously drawn?
         telemetryM.update();
         telemetryM.debug("position", teleopfollower.getPose());
         telemetryM.debug("velocity", teleopfollower.getVelocity());
