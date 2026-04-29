@@ -29,7 +29,7 @@ public class ErrorMainTeleop extends OpMode {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         robot.init(hardwareMap, telemetry,
-                (double) blackboard.getOrDefault("SHOOTERHEADING", 0),
+                0,
                 180,
                 2200,
                 30,
