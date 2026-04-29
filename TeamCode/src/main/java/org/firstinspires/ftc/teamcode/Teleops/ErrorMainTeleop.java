@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
 @Configurable
 @TeleOp
 public class ErrorMainTeleop extends OpMode {
-    private static  Follower teleopfollower;
+    private static Follower teleopfollower;
     private TelemetryManager telemetryM;
     public static Pose startingPose = (Pose) blackboard.getOrDefault("STARTPOSE", new Pose (60, 60, Math.toRadians(90)));
     Robot robot = new Robot();
@@ -108,7 +108,7 @@ public class ErrorMainTeleop extends OpMode {
         telemetry.addData("Camera Pose", robot.aprilTagWebcam.pedroPoseCamCorrection);
         telemetry.addData("IMU Pedro Heading", robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.DEGREES));
         telemetry.addData("Flywheel Velocity", robot.flyWheel.getVelocity());
-        telemetry.addData("Intake?", robot.intake.intake_On);
+        telemetry.addData("Intake?", robot.intake.intakeOn);
         telemetry.addData("Shoot?", robot.flyWheel.shoot);
 
         robot.update(gamepad1, gamepad2);
@@ -117,7 +117,7 @@ public class ErrorMainTeleop extends OpMode {
             robot.flyWheel.shoot = !robot.flyWheel.shoot;
         }
         if (gamepad1.aWasReleased()) {
-            robot.intake.intake_On = !robot.intake.intake_On;
+            robot.intake.intakeOn = !robot.intake.intakeOn;
         }
     }
 

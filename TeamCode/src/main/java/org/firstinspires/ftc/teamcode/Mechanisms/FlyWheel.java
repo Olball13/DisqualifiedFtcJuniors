@@ -10,8 +10,16 @@ public class FlyWheel {
     private DcMotor flywheelMotor2;
     public boolean shoot = false;
     private double equation;
-    public double desiredVelocity;
+    private double desiredVelocity;
+    private double currentVelocity;
 
+    /**
+     * Description: Initializes software variables and links them up to hardware variables, sets motor directions, and initializes equation.
+     * Pre-Condition: Parameters are initialized and hardware map is set up with names as shown
+     * Post-Condition: Software variables are initialized and equation is set
+     * @param hardwareMap The hardware map containing the motors for the flywheel
+     * @param shootEquation The equation the flywheel uses based of the camera detections to set its speed
+     */
     public void init(HardwareMap hardwareMap, double shootEquation) {
         equation = shootEquation;
         flywheelMotor1 = hardwareMap.get(DcMotor.class, "flywheel_motor_1");
@@ -21,26 +29,38 @@ public class FlyWheel {
         flywheelMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void setVelocity(double velocity) {
-        ((DcMotorEx) flywheelMotor1).setVelocity(velocity);
-        ((DcMotorEx) flywheelMotor2).setVelocity(velocity);
-        desiredVelocity = velocity;
-    }
+
+    /**
+     * Description: Has the velocity commands for the flywheel to run every iteration
+     * Pre-Condition: All software and hardware is initialized
+     * Post-Condition: Velocity is manipulated as required
+     */
     public void update() {
         if (shoot) {
             if (equation == 0) {
-                setVelocity(1500);
+                setDesiredVelocity(1500);
             } else {
-                setVelocity(equation);
+                setDesiredVelocity(equation);
             }
+            ((DcMotorEx) flywheelMotor1).setVelocity(desiredVelocity);
+            ((DcMotorEx) flywheelMotor2).setVelocity(desiredVelocity);
         } else {
-            setVelocity(0);
+            setDesiredVelocity(0);
         }
+        currentVelocity = (((DcMotorEx) flywheelMotor1).getVelocity() + ((DcMotorEx) flywheelMotor2).getVelocity()) / 2;
     }
 
-    public double getVelocity() {
-        double totalVelocity = ((DcMotorEx) flywheelMotor1).getVelocity() + ((DcMotorEx) flywheelMotor2).getVelocity();
-        return totalVelocity/2;
+    // Getters and Setters
+    public double getDesiredVelocity() {
+        return this.desiredVelocity;
+    }
+
+    public void setDesiredVelocity(double velocity) {
+        desiredVelocity = velocity;
+    }
+
+    public double getCurrentVelocity() {
+        return this.currentVelocity;
     }
 
 }

@@ -243,7 +243,7 @@ public class ErrorMainAuto extends OpMode {
                     robot.flyWheel.shoot = false;
                     if (use_Lane){
                         telemetry.addLine("Intake On");
-                        robot.intake.intake_On = true;
+                        robot.intake.intakeOn = true;
                         if (alliance_Colour.equals("Blue")) {
                             if (start_From.equals("Short")) {
                                 follower.followPath(go_Blue_Lane_1_Start);
@@ -349,7 +349,7 @@ public class ErrorMainAuto extends OpMode {
                 break;
             case 5:
                 telemetry.addLine("Intake Off"); //If it is not switched off before
-                robot.intake.intake_On = false;
+                robot.intake.intakeOn = false;
                 if (!follower.isBusy()) {
                     telemetry.addLine("Intake On");
                     if (alliance_Colour.equals("Blue")) {

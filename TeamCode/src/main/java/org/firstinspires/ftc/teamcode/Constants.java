@@ -1,9 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.follower.FollowerConstants;
+import com.pedropathing.ftc.FollowerBuilder;
+import com.pedropathing.ftc.drivetrains.MecanumConstants;
+import com.pedropathing.ftc.localization.Encoder;
+import com.pedropathing.ftc.localization.constants.DriveEncoderConstants;
+import com.pedropathing.paths.PathConstraints;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
-
     public static final class AprilTagWebcamConstants {
         public static final double camXCorrection = 0;// this is the x difference of the turret to the robots center (0)
         public static final double camYCorrection = DistanceUnit.INCH.fromCm(0.45);// this is the y difference of the turret to the robots center (+ value)
@@ -24,7 +33,5 @@ public class Constants {
     public static final class HoodConstants {
         public static final int maxAngle = 30;
     }
-
-
 
 }

@@ -23,6 +23,7 @@ public class LazySusan {
         telemetry.addLine("THE TURRET SHOULD BE FACING FORWARD RELATIVE TO THE ROBOT");
         telemetry.addLine("IF NOT THEN RESET AND FIX IT");
     }
+
     public void update (boolean left, boolean right, boolean centerTurret){
         telemetry.addData("Turret Robot Relative Orientation (Degrees)", (getOrientation(AngleUnit.DEGREES)));
         if (lazySusanMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
@@ -55,6 +56,7 @@ public class LazySusan {
             telemetry.addLine("ANGLE LIMIT REACHED");
         }
     }
+
     public double getOrientation(AngleUnit angleUnit) {
         if (angleUnit.equals(AngleUnit.DEGREES)) {
             return (lazySusanMotor.getCurrentPosition() * LazySusanConstants.encoderTicksToDegrees / LazySusanConstants.gearRatio) + startAngle;

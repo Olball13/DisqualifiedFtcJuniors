@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class AprilTagWebcam {
     private AprilTagProcessor aprilTagProcessor;
     private VisionPortal visionPortal;
-    public List<AprilTagDetection> detectedTags = new ArrayList<>();
+    private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
     public double degreeCorrection;
     public double rangeCorrection;
@@ -97,6 +97,7 @@ public class AprilTagWebcam {
         rangeCorrection = 0;
         return null;
     }
+
     private void fieldRelativeUpdate( double lazySusanOrientation) {
         //the robot x and y are converted from FTC to Pedro coordinates by adding 72 inches
         if (detectedTags == null || detectedTags.isEmpty()) { //Check if there are any detections

@@ -11,11 +11,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Teleops.ErrorMainTeleop;
 
 public class MecanumDriveTrain {
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
-    IMU imu;
+    private DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive;
+    private IMU imu;
+
+    /**
+     * Description: Initializes the drivetrain hardware
+     * Pre-Condition: Must be given a hardware map with the correct names
+     * Post-Condition: The software variables are linked up to the correct hardware components
+     * @param hardwareMap The hardware map
+     */
     public void init(HardwareMap hardwareMap){
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
@@ -51,6 +55,7 @@ public class MecanumDriveTrain {
             driveFieldRelative(right_stick_y, left_stick_x, right_stick_x);
         }
     }
+
     public void drive(double forward, double right, double rotate) {
         // This calculates the power needed for each wheel based on the amount of forward,
         // strafe right, and rotate
