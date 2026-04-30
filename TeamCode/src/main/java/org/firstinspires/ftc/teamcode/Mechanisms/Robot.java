@@ -18,9 +18,6 @@ public class Robot {
     public final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
     public final OpmodeIMU opmodeIMU = new OpmodeIMU();
 
-    // Attributes
-    private int activeTagID = 20; // Defaults to blue
-
 
     /**
      * Description:
@@ -62,11 +59,4 @@ public class Robot {
         mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
     }
 
-    // Getters and Setters
-    public int getActiveTagID() {
-        return activeTagID;
-    }
-    public void setActiveTagID(int activeTagID) {
-        this.activeTagID = activeTagID;
-    }
 }

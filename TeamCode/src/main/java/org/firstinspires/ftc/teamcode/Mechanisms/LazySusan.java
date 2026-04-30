@@ -12,6 +12,14 @@ public class LazySusan {
     private Telemetry telemetry;
     private DcMotor lazySusanMotor;
 
+    /**
+     * Description:
+     * Pre-Condition:
+     * Post-Condition:
+     * @param hardwareMap
+     * @param telemetry
+     * @param startAngle
+     */
     public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle) {
         //INITIALIZE the motor + telemetry and set the angle limit from its default value
         this.telemetry = telemetry;
@@ -20,11 +28,11 @@ public class LazySusan {
         lazySusanMotor.setDirection(DcMotor.Direction.FORWARD);
         lazySusanMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lazySusanMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        telemetry.addLine("THE TURRET SHOULD BE FACING FORWARD RELATIVE TO THE ROBOT");
+        telemetry.addLine("THE TURRET SHOULD BE FACING FORWARD RELATIVE TO THE ROBOT"); // How does this work in teleop after auto?
         telemetry.addLine("IF NOT THEN RESET AND FIX IT");
     }
 
-    public void update (boolean left, boolean right, boolean centerTurret, AprilTagWebcam webcam){
+    public void update (boolean left, boolean right, boolean centerTurret, AprilTagWebcam aprilTagWebcam){
         telemetry.addData("Turret Robot Relative Orientation (Degrees)", (getOrientation(AngleUnit.DEGREES)));
         if (lazySusanMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
             lazySusanMotor.setPower(1);
@@ -40,8 +48,8 @@ public class LazySusan {
         } else if (centerTurret) {
             lazySusanMotor.setTargetPosition(0);
             lazySusanMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        } else if (webcam.degreeCorrection != 0) {
-            double degCorr = webcam.degreeCorrection;
+        } else if (aprilTagWebcam.getDegreeCorrection() != 0) {
+            double degCorr = aprilTagWebcam.getDegreeCorrection();
             // A function that would gradually move the turret to the target position with the amount of radians left to the target position
             lazySusanMotor.setPower(degCorr/Math.abs(degCorr) * (Math.min(1, Math.abs(degCorr / 20)))); // 20 is my guess :)
         } else {

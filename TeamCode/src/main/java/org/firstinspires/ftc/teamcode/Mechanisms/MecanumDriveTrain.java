@@ -45,6 +45,14 @@ public class MecanumDriveTrain {
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
+    /**
+     * Description: Updates the drivetrain based on given
+     * Pre-Condition:
+     * @param resetYaw
+     * @param forward
+     * @param right
+     * @param rotate
+     */
     public void update(boolean resetYaw, double forward, double right, double rotate) {
         if (resetYaw) {
             imu.resetYaw();

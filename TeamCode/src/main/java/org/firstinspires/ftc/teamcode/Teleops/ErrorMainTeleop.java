@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
 @TeleOp
 public class ErrorMainTeleop extends OpMode {
 
-    // Atributes
+    // Attributes
     private static Follower teleopfollower;
     private TelemetryManager telemetryM;
     public static Pose startingPose = (Pose) blackboard.getOrDefault("STARTPOSE", new Pose (60, 60, Math.toRadians(90)));
@@ -62,12 +62,12 @@ public class ErrorMainTeleop extends OpMode {
                 if (gamepad1.leftBumperWasPressed()) {
                     if (alliance.equals("Blue")) {
                         alliance = "Red";
-                        robot.setActiveTagID(24);
                     } else {
                         alliance = "Blue";
-                        robot.setActiveTagID(20);
                     }
                 }
+                telemetry.addData("Alliance>", alliance);
+                telemetry.addData("Drive Type", drive_type);
                 break;
             case 2:
                 if (gamepad1.leftBumperWasPressed()) {
@@ -77,14 +77,12 @@ public class ErrorMainTeleop extends OpMode {
                         drive_type = "Field Oriented";
                     }
                 }
+                telemetry.addData("Alliance", alliance);
+                telemetry.addData("Drive Type>", drive_type);
                 break;
         }
 
-        // Telemetry for selected robot values
-        telemetry.addData("Alliance", alliance);
-        telemetry.addData("Drive Type>", drive_type);
-
-        // Oliver I don't know what this does, please update this comment
+        // Selection for drive type and alliance as an interface
         if (gamepad1.dpadUpWasPressed()) {
             interfaceSelection -= 1;
         }
@@ -99,7 +97,8 @@ public class ErrorMainTeleop extends OpMode {
         }
     }
 
-    // Oliver when is this method even called
+
+    @Override
     public void start() {teleopfollower.startTeleopDrive();}
 
     /**

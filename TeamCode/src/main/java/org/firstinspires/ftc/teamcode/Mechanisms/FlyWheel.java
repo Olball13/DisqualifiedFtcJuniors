@@ -6,9 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class FlyWheel {
+
+    // Hardware
     private DcMotor flywheelMotor1;
     private DcMotor flywheelMotor2;
-    public boolean shoot = false;
+    public boolean shoot = false; // Oliver where is this updated
     private double equation;
     private double desiredVelocity;
     private double currentVelocity;

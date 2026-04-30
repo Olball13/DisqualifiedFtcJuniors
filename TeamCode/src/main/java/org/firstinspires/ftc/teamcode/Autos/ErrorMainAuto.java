@@ -75,7 +75,7 @@ public class ErrorMainAuto extends OpMode {
         autoSelectUpdate();
     }
 
-    // Still don't know where this is called Oliver...
+    @Override
     public void start() {
         //Get the start heading and input info to the blackboard from the prechosen opmode selected in init_loop
         startHeading = follower.getHeading();
@@ -113,7 +113,6 @@ public class ErrorMainAuto extends OpMode {
                 if (gamepad1.leftBumperWasPressed()) {
                     if (alliance_Colour.equals("Blue")) {
                         alliance_Colour = "Red";
-                        robot.setActiveTagID(24);
                         if (start_From.equals("Short")) {
                             follower.setStartingPose(red_Short_Start);
                         } else {
@@ -121,7 +120,6 @@ public class ErrorMainAuto extends OpMode {
                         }
                     } else {
                         alliance_Colour = "Blue";
-                        robot.setActiveTagID(20);
                         if (start_From.equals("Short")) {
                             follower.setStartingPose(blue_Short_Start);
                         } else {
