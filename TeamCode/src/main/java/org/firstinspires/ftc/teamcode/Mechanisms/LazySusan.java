@@ -24,7 +24,7 @@ public class LazySusan {
         telemetry.addLine("IF NOT THEN RESET AND FIX IT");
     }
 
-    public void update (boolean left, boolean right, boolean centerTurret){
+    public void update (boolean left, boolean right, boolean centerTurret, AprilTagWebcam webcam){
         telemetry.addData("Turret Robot Relative Orientation (Degrees)", (getOrientation(AngleUnit.DEGREES)));
         if (lazySusanMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
             lazySusanMotor.setPower(1);
@@ -40,8 +40,8 @@ public class LazySusan {
         } else if (centerTurret) {
             lazySusanMotor.setTargetPosition(0);
             lazySusanMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }else if (AprilTagWebcam.degreeCorrection != 0) {
-            double degCorr = AprilTagWebcam.degreeCorrection;
+        } else if (webcam.degreeCorrection != 0) {
+            double degCorr = webcam.degreeCorrection;
             // A function that would gradually move the turret to the target position with the amount of radians left to the target position
             lazySusanMotor.setPower(degCorr/Math.abs(degCorr) * (Math.min(1, Math.abs(degCorr / 20)))); // 20 is my guess :)
         } else {
@@ -59,11 +59,11 @@ public class LazySusan {
 
     public double getOrientation(AngleUnit angleUnit) {
         if (angleUnit.equals(AngleUnit.DEGREES)) {
-            return ((lazySusanMotor.getCurrentPosition() / Robot.encoderTicksToDegrees) / Robot.gearRatio) + startAngle;
+            return ((lazySusanMotor.getCurrentPosition() / LazySusanConstants.encoderTicksToDegrees) / LazySusanConstants.gearRatio) + startAngle;
         } else if (angleUnit.equals(AngleUnit.RADIANS)) {
-            return ((lazySusanMotor.getCurrentPosition() / Robot.encoderTicksToRadians) / Robot.gearRatio) + (Math.toRadians(startAngle));
+            return ((lazySusanMotor.getCurrentPosition() / LazySusanConstants.encoderTicksToRadians) / LazySusanConstants.gearRatio) + (Math.toRadians(startAngle));
         } else {
-            return lazySusanMotor.getCurrentPosition() / Robot.gearRatio + startAngle * Robot.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
+            return lazySusanMotor.getCurrentPosition() / LazySusanConstants.gearRatio + startAngle * LazySusanConstants.encoderTicksToDegrees; // Out of ticks (28 = Full Rotation)
         }
     }
 }

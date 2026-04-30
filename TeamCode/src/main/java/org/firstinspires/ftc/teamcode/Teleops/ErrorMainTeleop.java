@@ -18,12 +18,20 @@ import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
 @Configurable
 @TeleOp
 public class ErrorMainTeleop extends OpMode {
+
+    // Atributes
     private static Follower teleopfollower;
     private TelemetryManager telemetryM;
     public static Pose startingPose = (Pose) blackboard.getOrDefault("STARTPOSE", new Pose (60, 60, Math.toRadians(90)));
     Robot robot = new Robot();
     public static String alliance = String.valueOf(blackboard.getOrDefault("ALLIANCE", "Blue")), drive_type = String.valueOf(blackboard.getOrDefault("DRIVETYPE", "Robot Oriented"));
     private int interfaceSelection = 1;
+
+    /**
+     * Description: Performs the tasks for the robot when the init button is pressed (init phase)
+     * Pre-Condition:
+     * Post-Condition: Init is performed
+     */
     @Override
     public void init() {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -32,32 +40,34 @@ public class ErrorMainTeleop extends OpMode {
             shooterHeading = 0;
         }
 
-        robot.init(hardwareMap, telemetry,
+        robot.init(hardwareMap,
+                telemetry,
                 (double) shooterHeading,
                 180,
                 2200,
-                30,
-                (AprilTagWebcam.rangeCorrection % 125)/125,
-                startingPose.getHeading());
+                30);
 
         teleopfollower = Constants.createFollower(hardwareMap);
             teleopfollower.setStartingPose(startingPose);
     }
 
+    /**
+     * Description: Performs the tasks during the init loop including alliance selection and drive modes
+     */
     @Override
     public void init_loop() {
+        // Selection for robot values
         switch (interfaceSelection) {
             case 1:
                 if (gamepad1.leftBumperWasPressed()) {
                     if (alliance.equals("Blue")) {
                         alliance = "Red";
+                        robot.setActiveTagID(24);
                     } else {
                         alliance = "Blue";
+                        robot.setActiveTagID(20);
                     }
                 }
-                telemetry.addData("Alliance>", alliance);
-                telemetry.addData("Drive Type", drive_type);
-
                 break;
             case 2:
                 if (gamepad1.leftBumperWasPressed()) {
@@ -67,11 +77,14 @@ public class ErrorMainTeleop extends OpMode {
                         drive_type = "Field Oriented";
                     }
                 }
-                telemetry.addData("Alliance", alliance);
-                telemetry.addData("Drive Type>", drive_type);
                 break;
         }
 
+        // Telemetry for selected robot values
+        telemetry.addData("Alliance", alliance);
+        telemetry.addData("Drive Type>", drive_type);
+
+        // Oliver I don't know what this does, please update this comment
         if (gamepad1.dpadUpWasPressed()) {
             interfaceSelection -= 1;
         }
@@ -85,8 +98,15 @@ public class ErrorMainTeleop extends OpMode {
             interfaceSelection = 1;
         }
     }
+
+    // Oliver when is this method even called
     public void start() {teleopfollower.startTeleopDrive();}
 
+    /**
+     * Description: Performs the required loop for the play phase of the OpMode after the play button is pressed
+     * Pre-Condition:
+     * Post-Condition:
+     */
     @Override
     public void loop() {
         teleopfollower.update();
@@ -111,10 +131,11 @@ public class ErrorMainTeleop extends OpMode {
         telemetry.addData("Pedro Pose", Math.round(teleopfollower.getPose().getX()) + ", " + Math.round(teleopfollower.getPose().getY()) + ", " + Math.round(teleopfollower.getHeading()));
         telemetry.addData("Camera Pose", robot.aprilTagWebcam.pedroPoseCamCorrection);
         telemetry.addData("IMU Pedro Heading", robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.DEGREES));
-        telemetry.addData("Flywheel Velocity", robot.flyWheel.getVelocity());
+        telemetry.addData("Flywheel Velocity", robot.flyWheel.getCurrentVelocity());
         telemetry.addData("Intake?", robot.intake.intakeOn);
         telemetry.addData("Shoot?", robot.flyWheel.shoot);
 
+        // Update for robot and all mechanisms
         robot.update(gamepad1, gamepad2);
 
         if(gamepad1.yWasReleased()) {

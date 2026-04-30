@@ -63,19 +63,19 @@ public class ErrorMainAuto extends OpMode {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
         PedroAutoFollower.buildPaths();
         //Init Robot Mechanisms
-        robot.init(hardwareMap, telemetry,
+        robot.init(hardwareMap,
+                telemetry,
                 0,
                 180,
                 220,
-                30,
-                (AprilTagWebcam.rangeCorrection % 125)/125,
-                startHeading);
-
+                30);
     }
 
     public void init_loop() {
         autoSelectUpdate();
     }
+
+    // Still don't know where this is called Oliver...
     public void start() {
         //Get the start heading and input info to the blackboard from the prechosen opmode selected in init_loop
         startHeading = follower.getHeading();
@@ -113,6 +113,7 @@ public class ErrorMainAuto extends OpMode {
                 if (gamepad1.leftBumperWasPressed()) {
                     if (alliance_Colour.equals("Blue")) {
                         alliance_Colour = "Red";
+                        robot.setActiveTagID(24);
                         if (start_From.equals("Short")) {
                             follower.setStartingPose(red_Short_Start);
                         } else {
@@ -120,6 +121,7 @@ public class ErrorMainAuto extends OpMode {
                         }
                     } else {
                         alliance_Colour = "Blue";
+                        robot.setActiveTagID(20);
                         if (start_From.equals("Short")) {
                             follower.setStartingPose(blue_Short_Start);
                         } else {
@@ -233,7 +235,7 @@ public class ErrorMainAuto extends OpMode {
             case 1:
                 if (follower.isBusy()) {
                  telemetry.addLine("Winding up Flywheel with range correction");
-                 robot.flyWheel.setVelocity(1500);
+                 robot.flyWheel.setDesiredVelocity(1500);
                  pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
@@ -322,7 +324,7 @@ public class ErrorMainAuto extends OpMode {
             case 4:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
-                    robot.flyWheel.setVelocity(1500);
+                    robot.flyWheel.setDesiredVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
@@ -373,7 +375,7 @@ public class ErrorMainAuto extends OpMode {
             case 7:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
-                    robot.flyWheel.setVelocity(1500);
+                    robot.flyWheel.setDesiredVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");

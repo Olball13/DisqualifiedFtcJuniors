@@ -29,8 +29,8 @@ public class AprilTagWebcam {
     private VisionPortal visionPortal;
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
-    public double degreeCorrection;
-    public double rangeCorrection;
+    private double degreeCorrection;
+    private double rangeCorrection;
     public Pose pedroPoseCamCorrection;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -156,5 +156,15 @@ public class AprilTagWebcam {
         if (visionPortal != null) {
             visionPortal.close();
         }
+    }
+
+
+
+    // Getters and Setters
+    public double getDegreeCorrection() {
+        return degreeCorrection;
+    }
+    public double getRangeCorrection() {
+        return rangeCorrection;
     }
 }
