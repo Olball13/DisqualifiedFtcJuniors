@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Robot {
 
@@ -44,19 +43,19 @@ public class Robot {
         opmodeIMU.update();
         flyWheel.update();
         hood.update();
-        lazySusan.update(false, false, false, aprilTagWebcam);
+        lazySusan.update(aprilTagWebcam);
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
-        intake.update(flyWheel.shoot, flyWheel);
+        intake.update(flyWheel);
     }
 
     public void update(Gamepad gamepad1, Gamepad gamepad2) {
         opmodeIMU.update();
         flyWheel.update();
         hood.update();
-        lazySusan.update(gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.dpad_down, aprilTagWebcam);
+        lazySusan.update(gamepad2, aprilTagWebcam);
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
-        intake.update(flyWheel.shoot, flyWheel);
-        mecanumDriveTrain.update(gamepad1.dpad_down, -gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
+        intake.update(flyWheel);
+        mecanumDriveTrain.update(gamepad1);
     }
 
 }

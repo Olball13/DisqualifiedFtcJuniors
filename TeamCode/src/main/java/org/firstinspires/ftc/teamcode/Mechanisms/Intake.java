@@ -10,7 +10,7 @@ public class Intake {
     // Hardware
     private DcMotor intakeMotor;
     private CRServo intakeServo;
-    public boolean intakeOn = false; // Also where is this set?
+    public boolean intakeOn = false;
 
     /**
      * Description: Initializes software variables and links them up to hardware variables and motor directions are set
@@ -29,16 +29,15 @@ public class Intake {
      * Description: Updates the intake motor and indexer each loop
      * Pre-Condition: All hardware and objects are initialized and params are of correct types
      * Post-Condition: Power commands are sent to desired hardware
-     * @param shoot
      * @param flyWheel The flywheel object for the robot
      */
-     public void update(boolean shoot, FlyWheel flyWheel) {
+     public void update(FlyWheel flyWheel) {
          if (intakeOn) {
              intakeMotor.setPower(1);
          } else {
              intakeMotor.setPower(0);
          }
-         if (shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() *0.95) {
+         if (flyWheel.shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() *0.95) {
              intakeServo.setPower(1);
          } else {
              if (intakeOn) {

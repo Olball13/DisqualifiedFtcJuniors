@@ -30,18 +30,18 @@ public class ShootingInfoTest extends OpMode {
         lazySusan.init(hardwareMap, telemetry, 0, turretAngleLimit);
         aprilTagWebcam.init(hardwareMap, telemetry);
         flyWheel.init(hardwareMap, 0);
-        hood.init(hardwareMap, 30, 0);
+        hood.init(hardwareMap, 0);
     }
 
 
     @Override
     public void loop() {
-        telemetryM.debug("Distance From Basket", AprilTagWebcam.rangeCorrection);
-        telemetryM.debug("Flywheel Velocity", flyWheel.getVelocity());
+        telemetryM.debug("Distance From Basket", aprilTagWebcam.rangeCorrection);
+        telemetryM.debug("Flywheel Velocity", flyWheel.getCurrentVelocity());
         telemetryM.debug("Ramp %", rampPercent);
-        lazySusan.update(gamepad1.square, gamepad1.circle, gamepad1.triangle);
-        if (gamepad1.left_bumper) {
-            flyWheel.setVelocity(flywheelSpeed);
+        lazySusan.update(gamepad1, aprilTagWebcam);
+        if (gamepad1.yWasPressed()) {
+            flyWheel.setDesiredVelocity(flywheelSpeed);
         }
         hood.update();
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));

@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.Mechanisms.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
@@ -43,9 +42,9 @@ public class ErrorMainTeleop extends OpMode {
         robot.init(hardwareMap,
                 telemetry,
                 (double) shooterHeading,
-                180,
                 2200,
-                30);
+                (robot.aprilTagWebcam.rangeCorrection % 125)/125,
+                startingPose.getHeading());
 
         teleopfollower = Constants.createFollower(hardwareMap);
             teleopfollower.setStartingPose(startingPose);
@@ -97,7 +96,6 @@ public class ErrorMainTeleop extends OpMode {
         }
     }
 
-
     @Override
     public void start() {teleopfollower.startTeleopDrive();}
 
@@ -137,7 +135,7 @@ public class ErrorMainTeleop extends OpMode {
         // Update for robot and all mechanisms
         robot.update(gamepad1, gamepad2);
 
-        if(gamepad1.yWasReleased()) {
+        if(gamepad1.rightTriggerWasPressed()) {
             robot.flyWheel.shoot = !robot.flyWheel.shoot;
         }
         if (gamepad1.aWasReleased()) {

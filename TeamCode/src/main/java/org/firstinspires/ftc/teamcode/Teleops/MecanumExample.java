@@ -76,9 +76,9 @@ public class MecanumExample extends OpMode {
             driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
         if (gamepad1.y) {
-            shootingLogic.setVelocity(0.5);
+            shootingLogic.setDesiredVelocity(0.5);
         } else {
-            shootingLogic.setVelocity(0);
+            shootingLogic.setDesiredVelocity(0);
         }
     }
 

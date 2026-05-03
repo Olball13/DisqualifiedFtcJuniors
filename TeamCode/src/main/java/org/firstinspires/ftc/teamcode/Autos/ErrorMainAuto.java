@@ -66,9 +66,10 @@ public class ErrorMainAuto extends OpMode {
         robot.init(hardwareMap,
                 telemetry,
                 0,
-                180,
-                220,
-                30);
+                2200,
+                (robot.aprilTagWebcam.rangeCorrection % 125)/125,
+                startHeading);
+
     }
 
     public void init_loop() {

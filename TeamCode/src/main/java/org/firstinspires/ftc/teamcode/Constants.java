@@ -10,8 +10,8 @@ public class Constants {
     }
 
     public static final class LazySusanConstants {
-        public static final double encoderTicksToDegrees = (double) 28/360;//NOT CORRECT MAYBE
-        public static final double encoderTicksToRadians = (double) 28/360 * (Math.PI/180);
+        public static final double encoderTicksToDegrees = (double) 28 / 360;//NOT CORRECT MAYBE
+        public static final double encoderTicksToRadians = (double) 28 / (2 * Math.PI);
         public static final double gearRatio =
             3 //Motor ratio attachment 1
                     *5 // Motor ratio attachment 2
