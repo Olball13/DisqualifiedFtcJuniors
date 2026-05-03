@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -45,14 +45,14 @@ public class MecanumDriveTrain {
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
-    public void update(boolean resetYaw, double right_stick_y, double left_stick_x, double right_stick_x) {
-        if (resetYaw) {
+    public void update(Gamepad gamepad1) {
+        if (gamepad1.dpad_down) {
             imu.resetYaw();
         }
         if (ErrorMainTeleop.drive_type.equals("Robot Oriented")) {
-            drive(right_stick_y, left_stick_x, right_stick_x);
+            drive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
         } else {
-            driveFieldRelative(right_stick_y, left_stick_x, right_stick_x);
+            driveFieldRelative(gamepad1.right_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
         }
     }
 

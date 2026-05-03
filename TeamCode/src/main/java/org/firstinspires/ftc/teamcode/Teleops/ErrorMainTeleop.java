@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.Mechanisms.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
@@ -30,10 +29,8 @@ public class ErrorMainTeleop extends OpMode {
 
         robot.init(hardwareMap, telemetry,
                 0,
-                180,
                 2200,
-                30,
-                (AprilTagWebcam.rangeCorrection % 125)/125,
+                (robot.aprilTagWebcam.rangeCorrection % 125)/125,
                 startingPose.getHeading());
 
         teleopfollower = Constants.createFollower(hardwareMap);
@@ -81,6 +78,8 @@ public class ErrorMainTeleop extends OpMode {
             interfaceSelection = 1;
         }
     }
+
+    @Override
     public void start() {teleopfollower.startTeleopDrive();}
 
     @Override
@@ -107,13 +106,13 @@ public class ErrorMainTeleop extends OpMode {
         telemetry.addData("Pedro Pose", Math.round(teleopfollower.getPose().getX()) + ", " + Math.round(teleopfollower.getPose().getY()) + ", " + Math.round(teleopfollower.getHeading()));
         telemetry.addData("Camera Pose", robot.aprilTagWebcam.pedroPoseCamCorrection);
         telemetry.addData("IMU Pedro Heading", robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.DEGREES));
-        telemetry.addData("Flywheel Velocity", robot.flyWheel.getVelocity());
+        telemetry.addData("Flywheel Velocity", robot.flyWheel.getCurrentVelocity());
         telemetry.addData("Intake?", robot.intake.intakeOn);
         telemetry.addData("Shoot?", robot.flyWheel.shoot);
 
         robot.update(gamepad1, gamepad2);
 
-        if(gamepad1.yWasReleased()) {
+        if(gamepad1.rightTriggerWasPressed()) {
             robot.flyWheel.shoot = !robot.flyWheel.shoot;
         }
         if (gamepad1.aWasReleased()) {

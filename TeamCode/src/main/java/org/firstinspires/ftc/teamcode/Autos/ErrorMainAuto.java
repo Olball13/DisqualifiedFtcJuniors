@@ -33,7 +33,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.Mechanisms.PedroAutoFollower;
 import org.firstinspires.ftc.teamcode.Mechanisms.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -65,10 +64,8 @@ public class ErrorMainAuto extends OpMode {
         //Init Robot Mechanisms
         robot.init(hardwareMap, telemetry,
                 0,
-                180,
-                220,
-                30,
-                (AprilTagWebcam.rangeCorrection % 125)/125,
+                2200,
+                (robot.aprilTagWebcam.rangeCorrection % 125)/125,
                 startHeading);
 
     }
@@ -233,7 +230,7 @@ public class ErrorMainAuto extends OpMode {
             case 1:
                 if (follower.isBusy()) {
                  telemetry.addLine("Winding up Flywheel with range correction");
-                 robot.flyWheel.setVelocity(1500);
+                 robot.flyWheel.setDesiredVelocity(1500);
                  pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
@@ -322,7 +319,7 @@ public class ErrorMainAuto extends OpMode {
             case 4:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
-                    robot.flyWheel.setVelocity(1500);
+                    robot.flyWheel.setDesiredVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");
@@ -373,7 +370,7 @@ public class ErrorMainAuto extends OpMode {
             case 7:
                 if (follower.isBusy()) {
                     telemetry.addLine("Winding up Flywheel with range correction");
-                    robot.flyWheel.setVelocity(1500);
+                    robot.flyWheel.setDesiredVelocity(1500);
                     pathTime.reset();
                 } else if (pathTime.seconds() < general_Shoot_Time) {
                     telemetry.addLine("Shooting with range correction");

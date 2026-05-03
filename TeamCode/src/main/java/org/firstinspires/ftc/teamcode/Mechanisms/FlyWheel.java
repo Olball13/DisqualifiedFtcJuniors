@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class FlyWheel {
@@ -38,7 +37,7 @@ public class FlyWheel {
     public void update() {
         if (shoot) {
             if (equation == 0) {
-                setDesiredVelocity(1500);
+                setDesiredVelocity(2200);
             } else {
                 setDesiredVelocity(equation);
             }

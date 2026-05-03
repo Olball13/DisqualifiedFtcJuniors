@@ -77,7 +77,11 @@ public class AprilTagWebcam {
             telemetry.addData("Degree Correction", degreeCorrection);
             telemetry.addData("Range Correction", rangeCorrection);
             telemetry.addLine("----Detected Tags----");
-            telemetry.addLine(getDetectedTags().toString());
+            int i = 0;
+            while (i < getDetectedTags().size()) {
+                telemetry.addLine(String.valueOf(getDetectedTags().get(0)));
+                i++;
+            }
         } else {
             telemetry.addLine("Unknown Id");
             telemetry.addData("Info", detectedid.center.x + ", " + detectedid.center.y);
@@ -157,4 +161,6 @@ public class AprilTagWebcam {
             visionPortal.close();
         }
     }
+
+    //Getters & Setters
 }

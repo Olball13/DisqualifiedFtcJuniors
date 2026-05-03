@@ -23,13 +23,13 @@ public class Intake {
          intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
      }
 
-     public void update(boolean shoot, FlyWheel flyWheel) {
+     public void update(FlyWheel flyWheel) {
          if (intakeOn) {
              intakeMotor.setPower(1);
          } else {
              intakeMotor.setPower(0);
          }
-         if (shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() *0.95) {
+         if (flyWheel.shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() *0.95) {
              intakeServo.setPower(1);
          } else {
              if (intakeOn) {
