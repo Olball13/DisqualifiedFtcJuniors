@@ -15,19 +15,19 @@ public class Robot {
     public final Intake intake = new Intake();
     public final LazySusan lazySusan = new LazySusan();
     public final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
-    public final OpmodeIMU opmodeIMU = new OpmodeIMU();
+    public final OpModeIMU opmodeIMU = new OpModeIMU();
 
 
     /**
-     * Description:
-     * Pre-Condition:
-     * Post-Condition:
-     * @param hardwareMap
-     * @param telemetry
-     * @param turretStartAngle
-     * @param flyWheelEquation
-     * @param hoodEquation
-     * @param imuStartHeading
+     * Description: The init method for the all the subclasses within the robot object
+     * Pre-Condition: hardwareMap and telemetry must be declared (already from extended OpMode)
+     * Post-Condition: Initialises all mechanisms with set parameters
+     * @param hardwareMap the hardwareMap passing through all the motors and sensors of the mechanisms
+     * @param telemetry telemetry passed that the mechanisms display
+     * @param turretStartAngle The starting orientation of the turret, helpful after auto
+     * @param flyWheelEquation The equation determining the average flywheel velocity based off of distance readings
+     * @param hoodEquation The equation determining the average hood percentage based off of distance readings
+     * @param imuStartHeading The starting orientation of the robot, helpful for preset autos and to the start of teleop
      */
     public void init(HardwareMap hardwareMap, Telemetry telemetry, double turretStartAngle, double flyWheelEquation, double hoodEquation, double imuStartHeading) {
         aprilTagWebcam.init(hardwareMap, telemetry);

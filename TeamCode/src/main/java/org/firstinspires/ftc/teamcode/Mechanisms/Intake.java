@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
 
     // Hardware
     private DcMotor intakeMotor;
-    private CRServo intakeServo;
+    private Servo intakeServo;
     public boolean intakeOn = false;
 
     /**
@@ -21,8 +20,8 @@ public class Intake {
      public void init(HardwareMap hardwareMap) {
          intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
          intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-         intakeServo = hardwareMap.get(CRServo.class, "intake_servo");
-         intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
+         intakeServo = hardwareMap.get(Servo.class, "intake_servo");
+         intakeServo.setDirection(Servo.Direction.FORWARD);
      }
 
     /**
@@ -37,14 +36,12 @@ public class Intake {
          } else {
              intakeMotor.setPower(0);
          }
-         if (flyWheel.shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() *0.95) {
-             intakeServo.setPower(1);
+         //&& flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() * 0.95
+         if (flyWheel.shoot && flyWheel.getCurrentVelocity() >= flyWheel.getDesiredVelocity() * 0.45) {
+             intakeServo.setPosition(1);
+             intakeMotor.setPower(1);
          } else {
-             if (intakeOn) {
-                 intakeServo.setPower(-1);
-             } else {
-                 intakeServo.setPower(0);
-             }
+             intakeServo.setPosition(0);
          }
      }
 }

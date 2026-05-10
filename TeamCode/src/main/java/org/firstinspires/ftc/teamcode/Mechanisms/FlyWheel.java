@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class FlyWheel {
@@ -9,7 +10,7 @@ public class FlyWheel {
     // Hardware
     private DcMotor flywheelMotor1;
     private DcMotor flywheelMotor2;
-    public boolean shoot = false; // Oliver where is this updated
+    public boolean shoot = false;
     private double equation;
     private double desiredVelocity;
     private double currentVelocity;
@@ -25,7 +26,7 @@ public class FlyWheel {
         equation = shootEquation;
         flywheelMotor1 = hardwareMap.get(DcMotor.class, "flywheel_motor_1");
         flywheelMotor2 = hardwareMap.get(DcMotor.class, "flywheel_motor_2");
-        flywheelMotor1.setDirection(DcMotor.Direction.FORWARD);
+        flywheelMotor1.setDirection(DcMotor.Direction.FORWARD           );
         flywheelMotor2.setDirection(DcMotor.Direction.REVERSE);
         flywheelMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -39,15 +40,15 @@ public class FlyWheel {
     public void update() {
         if (shoot) {
             if (equation == 0) {
-                setDesiredVelocity(2200);
+                setDesiredVelocity(1900);
             } else {
                 setDesiredVelocity(equation);
             }
-            ((DcMotorEx) flywheelMotor1).setVelocity(desiredVelocity);
-            ((DcMotorEx) flywheelMotor2).setVelocity(desiredVelocity);
         } else {
             setDesiredVelocity(0);
         }
+        ((DcMotorEx) flywheelMotor1).setVelocity(desiredVelocity);
+        ((DcMotorEx) flywheelMotor2).setVelocity(desiredVelocity);
         currentVelocity = (((DcMotorEx) flywheelMotor1).getVelocity() + ((DcMotorEx) flywheelMotor2).getVelocity()) / 2;
     }
 

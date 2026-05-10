@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class OpmodeIMU {//This should proof useful to keep the proper orientation for the robot, as the drivetrain's imu resets when adjusting yaw for field relative
+public class OpModeIMU {//This should proof useful to keep the proper orientation for the robot, as the drivetrain's imu resets when adjusting yaw for field relative
     private IMU imu;
     private Double startingOffset;
     private Telemetry telemetry;
-    public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle) {sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    public void init(HardwareMap hardwareMap, Telemetry telemetry, double startAngle) {
         this.telemetry = telemetry;
         startingOffset = startAngle;
         imu = hardwareMap.get(IMU.class, "imu");

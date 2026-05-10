@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.MapDrawer;
 public class ErrorMainTeleop extends OpMode {
 
     // Attributes
-    private static Follower teleopfollower;
+    //private static Follower teleopfollower;
     private TelemetryManager telemetryM;
     public static Pose startingPose = (Pose) blackboard.getOrDefault("STARTPOSE", new Pose (60, 60, Math.toRadians(90)));
     Robot robot = new Robot();
@@ -28,12 +28,15 @@ public class ErrorMainTeleop extends OpMode {
 
     /**
      * Description: Performs the tasks for the robot when the init button is pressed (init phase)
-     * Pre-Condition:
+     * Pre-Condition: All objects (telemetry, follower, robot) must be declared
      * Post-Condition: Init is performed
      */
     @Override
     public void init() {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
+        //teleopfollower = Constants.createFollower(hardwareMap);
+        //teleopfollower.setStartingPose(startingPose);
+
         Object shooterHeading = blackboard.get("SHOOTERHEADING");
         if (shooterHeading == null) {
             shooterHeading = 0;
@@ -41,17 +44,16 @@ public class ErrorMainTeleop extends OpMode {
 
         robot.init(hardwareMap,
                 telemetry,
-                (double) shooterHeading,
+                0,
                 2200,
-                (robot.aprilTagWebcam.rangeCorrection % 125)/125,
+                robot.aprilTagWebcam.rangeCorrection,
                 startingPose.getHeading());
-
-        teleopfollower = Constants.createFollower(hardwareMap);
-            teleopfollower.setStartingPose(startingPose);
     }
 
     /**
      * Description: Performs the tasks during the init loop including alliance selection and drive modes
+     * Pre-Condition: interfaceSelection, driveType, and alliance variable must be initialized
+     * Post-Condition: Basic interface for selecting modes will be displayed in telemetry
      */
     @Override
     public void init_loop() {
@@ -96,36 +98,36 @@ public class ErrorMainTeleop extends OpMode {
         }
     }
 
-    @Override
-    public void start() {teleopfollower.startTeleopDrive();}
+    //@Override
+    //public void start() {teleopfollower.startTeleopDrive();}
 
     /**
      * Description: Performs the required loop for the play phase of the OpMode after the play button is pressed
-     * Pre-Condition:
-     * Post-Condition:
+     * Pre-Condition: All objects (telemetry, follower, robot) must be declared and initialized
+     * Post-Condition: loop components executed
      */
     @Override
     public void loop() {
-        teleopfollower.update();
-        // if (robot.aprilTagWebcam.pedroPoseCamCorrection != null) {teleopfollower.setPose(robot.aprilTagWebcam.pedroPoseCamCorrection);}
-        // teleopfollower.setHeading(robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.RADIANS));
-        MapDrawer.drawDebug(teleopfollower);
+        //teleopfollower.update();
+        //if (robot.aprilTagWebcam.pedroPoseCamCorrection != null) {teleopfollower.setPose(robot.aprilTagWebcam.pedroPoseCamCorrection);}
+        //teleopfollower.setHeading(robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.RADIANS));
+        //MapDrawer.drawDebug(teleopfollower);
         MapDrawer.drawRobot(robot.aprilTagWebcam.pedroPoseCamCorrection); // Will this negate the robot previously drawn?
-        telemetryM.update();
-        telemetryM.debug("position", teleopfollower.getPose());
-        telemetryM.debug("velocity", teleopfollower.getVelocity());
+        //telemetryM.update();
+        //telemetryM.debug("position", teleopfollower.getPose());
+        //telemetryM.debug("velocity", teleopfollower.getVelocity());
         telemetryM.debug("HELLO");
         /*
         telemetry.addLine("----Gmpd 1----");
         telemetry.addLine("dpad down to reset Yaw");
-        telemetry.addLine("Press Y for shoot toggle");
-        telemetry.addLine("Press A for intake toggle");
+        telemetry.addLine("Press R2 for shoot");
+        telemetry.addLine("Press R1 for intake toggle");
         telemetry.addLine("----Gmpd 2----");
         telemetry.addLine("L1 for turret left");
         telemetry.addLine("R1 for turret Right");
         telemetry.addLine("dpad down to move turret to 0 (robot relative)");
         */
-        telemetry.addData("Pedro Pose", Math.round(teleopfollower.getPose().getX()) + ", " + Math.round(teleopfollower.getPose().getY()) + ", " + Math.round(teleopfollower.getHeading()));
+        //telemetry.addData("Pedro Pose", Math.round(teleopfollower.getPose().getX()) + ", " + Math.round(teleopfollower.getPose().getY()) + ", " + Math.round(teleopfollower.getHeading()));
         telemetry.addData("Camera Pose", robot.aprilTagWebcam.pedroPoseCamCorrection);
         telemetry.addData("IMU Pedro Heading", robot.opmodeIMU.pedroPoseHeadingCorrection(AngleUnit.DEGREES));
         telemetry.addData("Flywheel Velocity", robot.flyWheel.getCurrentVelocity());
@@ -135,11 +137,9 @@ public class ErrorMainTeleop extends OpMode {
         // Update for robot and all mechanisms
         robot.update(gamepad1, gamepad2);
 
-        if(gamepad1.rightTriggerWasPressed()) {
+        robot.intake.intakeOn = gamepad1.right_trigger > 0;
+        if (gamepad1.rightBumperWasPressed()) {
             robot.flyWheel.shoot = !robot.flyWheel.shoot;
-        }
-        if (gamepad1.aWasReleased()) {
-            robot.intake.intakeOn = !robot.intake.intakeOn;
         }
     }
 

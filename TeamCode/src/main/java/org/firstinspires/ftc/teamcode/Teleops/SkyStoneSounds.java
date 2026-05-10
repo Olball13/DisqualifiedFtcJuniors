@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Teleops;
 import android.content.Context;
 
 import com.qualcomm.ftccommon.SoundPlayer;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -65,7 +64,7 @@ public class SkyStoneSounds extends LinearOpMode {
                 }
             }
 
-            // Remember the last state of the dpad to detect changes.
+            // Remember the mlast state of the dpad to detect changes.
             was_dpad_up     = gamepad1.dpad_up;
             was_dpad_down   = gamepad1.dpad_down;
 

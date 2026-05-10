@@ -21,16 +21,15 @@ public class ShootingInfoTest extends OpMode {
     AprilTagWebcam aprilTagWebcam = new AprilTagWebcam();
     private TelemetryManager telemetryM;
     public static double flywheelSpeed = 0.2;
-    public static double turretAngleLimit = 180;
     public static double rampPercent = 0;
 
     @Override
     public void init() {
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
-        lazySusan.init(hardwareMap, telemetry, 0, turretAngleLimit);
+        lazySusan.init(hardwareMap, telemetry, 0);
         aprilTagWebcam.init(hardwareMap, telemetry);
-        flyWheel.init(hardwareMap, 0);
-        hood.init(hardwareMap, 0);
+        flyWheel.init(hardwareMap, flywheelSpeed);
+        hood.init(hardwareMap, rampPercent);
     }
 
 
@@ -39,13 +38,15 @@ public class ShootingInfoTest extends OpMode {
         telemetryM.debug("Distance From Basket", aprilTagWebcam.rangeCorrection);
         telemetryM.debug("Flywheel Velocity", flyWheel.getCurrentVelocity());
         telemetryM.debug("Ramp %", rampPercent);
+
         lazySusan.update(gamepad1, aprilTagWebcam);
-        if (gamepad1.yWasPressed()) {
-            flyWheel.setDesiredVelocity(flywheelSpeed);
-        }
         hood.update();
         aprilTagWebcam.update(lazySusan.getOrientation(AngleUnit.RADIANS));
 
-
+        if (gamepad1.right_trigger > 0) {
+            flyWheel.setDesiredVelocity(flywheelSpeed);
+        } else {
+            flyWheel.setDesiredVelocity(0);
+        }
     }
 }

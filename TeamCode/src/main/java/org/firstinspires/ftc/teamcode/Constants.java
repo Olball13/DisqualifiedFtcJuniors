@@ -17,11 +17,5 @@ public class Constants {
                     *5 // Motor ratio attachment 2
                     *5; // 18 tooth gear to 90 tooth lazy susan
         public static final double angleLimit = 180;// This would only allow the turret to move 90 degrees left and right
-
     }
-
-    public static final class HoodConstants {
-        public static final int maxAngle = 30;
-    }
-
 }

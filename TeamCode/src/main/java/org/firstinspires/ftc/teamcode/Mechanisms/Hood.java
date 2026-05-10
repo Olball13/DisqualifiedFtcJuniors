@@ -5,8 +5,6 @@ import androidx.core.math.MathUtils;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Constants.HoodConstants;
-
 public class Hood {
 
     // Hardware
@@ -23,6 +21,7 @@ public class Hood {
     public void init(HardwareMap hardwareMap, double angleEquation) {
         this.equation = angleEquation;
         hoodServo = hardwareMap.get(Servo.class, "ramp_angle_servo");
+        hoodServo.setDirection(Servo.Direction.REVERSE);
     }
 
     /**
@@ -46,12 +45,7 @@ public class Hood {
         if (!(0 <= anglePercent && anglePercent <= 100))
             anglePercent = MathUtils.clamp(anglePercent, 0, 100);
 
-        // Calculating the desired position for the hood
-         double degreesToServoRotation = (double) 1 / 360; // For every 1 degree is this value to a set Servo Pos
-         double anglePercentToDegrees = anglePercent * HoodConstants.maxAngle; // Conversion from a percentage (0-1) of the max angle to degrees
-         double anglePercentToServoRotation = anglePercentToDegrees * degreesToServoRotation; // The value of of the Servo Pos translated from the angle %
-         double normalizedValue = Math.min(Math.max(anglePercentToServoRotation, 0), 1); // Normalize values to fit servo parameters
-         hoodServo.setPosition(normalizedValue);
+        // Setting value
+        hoodServo.setPosition(anglePercent/100);
     }
-
 }

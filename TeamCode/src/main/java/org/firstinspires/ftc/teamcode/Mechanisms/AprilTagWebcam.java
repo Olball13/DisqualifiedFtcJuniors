@@ -33,6 +33,13 @@ public class AprilTagWebcam {
     public double rangeCorrection;
     public Pose pedroPoseCamCorrection;
 
+    /**
+     * Description: The initialization method for the camera
+     * Pre-Condition: All Parameters are declared
+     * Post-Condition: Camera settings is optimized and initialized
+     * @param hardwareMap hardwareMap passed into OpMode
+     * @param telemetry telemetry object passed into OpMode
+     */
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawTagID(true)
